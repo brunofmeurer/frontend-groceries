@@ -1,0 +1,15 @@
+:host /deep/ div.ng-trigger {
+    width: auto !important;
+}
+
+:host header {
+    padding: 5px;
+    background-color: #F4F4F4;
+}
+
+:host header h1 {
+    margin-left: 10px;
+    font-size: 15px;
+    font-weight: 400;
+    display: inline;
+}
