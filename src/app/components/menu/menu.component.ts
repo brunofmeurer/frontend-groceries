@@ -6,6 +6,10 @@ import {MenuItem} from 'primeng/api';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })
+/**
+ * @author Bruno Meurer
+ * @description Toolbar menu component
+ */
 export class MenuComponent implements OnInit {
   @Input() title: string = "My App"
   constructor() { }

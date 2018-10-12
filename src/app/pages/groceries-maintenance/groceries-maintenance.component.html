@@ -1,12 +1,46 @@
 <app-breadcrumb [items]="itemsBreadcrumb"></app-breadcrumb>
-<p>
-  groceries-maintenance works!
-</p>
-<div class="ui-g">
-    <div class="ui-g-2">
-        <button class="ui-button-success" type="text" (click)="save()" pButton icon="pi pi-save"></button>
+<form [formGroup]="userform" (ngSubmit)="onSubmit(userform.value)">
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-8 ui-md-offset-2">
+            <span class="field ui-float-label">
+                <input required id="name-item" type="text" size="50" pInputText formControlName="name">
+                <label for="name-item">Nome *</label>
+            </span>
+            <p-message severity="error" text="Name is required (Max 50 characters)" *ngIf="!userform.controls['name'].valid&&userform.controls['name'].dirty"></p-message>
+            <span class="field ui-float-label">
+                <p-dropdown required [autoDisplayFirst]="false" id="um" [options]="units" formControlName="unitOfMeasurement"></p-dropdown>
+                <label for="um">Unidade de medida *</label>
+            </span>
+            <span class="field no-float-label">
+                <label class="label">Quantidade </label>
+                <div class="ui-inputgroup">
+                    <input id="quantity" type="number" pInputText formControlName="quantity">
+                    <span class="ui-inputgroup-addon">{{um}}</span> 
+                </div>                
+            </span>
+            <span class="field ui-float-label">
+                <input required id="price" type="number" step=".01" pInputText formControlName="price">
+                <label for="price">Preço *</label>
+            </span>
+            <p-message severity="error" text="Price is required" *ngIf="!userform.controls['price'].valid&&userform.controls['price'].dirty"></p-message>
+            <span class="field no-float-label">
+                <label class="label">Perecível? *</label>
+                <br>
+                <p-inputSwitch id="spoils" formControlName="spoils"></p-inputSwitch>
+            </span>
+            <span class="field ui-float-label">
+                <p-calendar id="expirationDate" [touchUI]="true" formControlName="expirationDate" dateFormat="dd/mm/yy"></p-calendar>
+                <label for="expirationDate">Data de validade {{userform.value.spoils ? '*' : ''}}</label>
+            </span>
+
+            <span class="field ui-float-label">
+                <p-calendar id="dateFactory" [touchUI]="true" formControlName="dateFactory" dateFormat="dd/mm/yy"></p-calendar>
+                <label for="dateFactory">Data de fabricação *</label>
+            </span>
+        </div>
+        <div class="ui-g-12 ui-g-12 ui-md-8 ui-md-offset-2">
+            <button id="save" label="Salvar" class="ui-button-default" type="submit" pButton icon="pi pi-save" [disabled]="!userform.valid"></button>
+            <button id="cancel" label="Cancelar" class="ui-button-danger" type="text" (click)="cancel()" pButton icon="pi pi-times-circle"></button>
+        </div>
     </div>
-    <div class="ui-g-2">
-        <button class="ui-button-danger" type="text" (click)="cancel()" pButton icon="pi pi-times-circle"></button>
-    </div>
-</div>
+</form>

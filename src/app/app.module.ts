@@ -15,11 +15,31 @@ import { RadioButtonModule } from 'primeng/primeng';
 import { SidebarModule } from 'primeng/sidebar';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
+
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
+
+// alerts
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ConfirmationService} from 'primeng/api';
+
+// components list
+import {DataViewModule} from 'primeng/dataview';
+import {CardModule} from 'primeng/card';
+
+// forms
+import { DropdownModule } from 'primeng/dropdown';
+import {CalendarModule} from 'primeng/calendar';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { InputTextModule } from 'primeng/inputtext';
 
 // custom
 import { MenuComponent } from './components/menu/menu.component'
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component'
+import { ItemListComponent } from './components/itemList/item-list.component'
+import { SpoilsPipe } from './pipes/spoils.pipe'
 
 @NgModule({
   declarations: [
@@ -28,7 +48,9 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
     DashboardComponent,
     GroceriesListComponent,
     MenuComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    ItemListComponent,
+    SpoilsPipe
   ],
   imports: [
     BrowserModule,
@@ -36,13 +58,24 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
     MenuModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     AccordionModule,
     PanelModule,
     ButtonModule,
     RadioButtonModule,
-    SidebarModule
+    SidebarModule,
+    InputSwitchModule,
+    InputTextModule,
+    MessagesModule,
+    MessageModule,
+    DropdownModule,
+    CalendarModule,
+    DataViewModule,
+    CardModule,
+    ProgressSpinnerModule,
+    ConfirmDialogModule
   ],
-  providers: [],
+  providers: [ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

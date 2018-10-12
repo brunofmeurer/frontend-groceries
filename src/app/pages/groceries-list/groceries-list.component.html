@@ -1,3 +1,52 @@
 <app-breadcrumb [items]="itemsBreadcrumb"></app-breadcrumb>
 
-<button label="New Grocerie" type="text" (click)="add()" pButton icon="pi pi-plus-circle"></button>
+<button id="add" type="text" label="Novo Mantimento" (click)="add()" pButton icon="pi pi-plus-circle"></button>
+
+<p-dataView 
+    [value]="list"
+    [paginator]="true"
+    [rows]="5"
+    paginatorPosition="both"
+    filterBy="name"
+    [sortField]="sortField"
+    [sortOrder]="sortOrder"
+    emptyMessage="Nenhum mantimento encontrado"
+    #dv>
+    <p-header>
+        <div class="ui-helper-clearfix">
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-4">
+                    <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Organizar por..." (onChange)="onSortChange($event)" [autoWidth]="false" [style]="{'min-width':'15em'}"></p-dropdown>
+                </div>
+                <div class="ui-g-6 ui-md-4 filter-container">
+                    <div style="position:relative">
+                        <input type="search" pInputText placeholder="Buscar" (keyup)="dv.filter($event.target.value)">
+                    </div>
+                </div>
+                <div class="ui-g-6 ui-md-4" style="text-align:right">
+                    <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+                </div>
+            </div>
+        </div>
+    </p-header>
+    <ng-template let-grocerie pTemplate="listItem">
+        <div class="ui-g-12">
+            <app-item-list (refresh)="fetch($event)" [grocerie]="grocerie"></app-item-list>
+        </div>
+    </ng-template>
+    <ng-template let-grocerie pTemplate="gridItem">
+        <div style="padding:.5em" class="ui-g-12 ui-md-3">
+            <app-item-list (refresh)="fetch($event)" [grocerie]="grocerie"></app-item-list>
+        </div>
+    </ng-template>
+</p-dataView>
+<p-confirmDialog 
+    header="Confirmação"
+    icon="pi pi-exclamation-triangle"
+    width="300"
+    #cd>
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check" label="Sim" (click)="cd.accept()"></button>
+        <button class="ui-button-danger" type="button" pButton icon="pi pi-times" label="Não" (click)="cd.reject()"></button>
+    </p-footer>
+</p-confirmDialog>

@@ -7,10 +7,10 @@ import { AppComponent } from './app.component'
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'groceries', component: GroceriesListComponent },
-  { path: 'groceries/add', component: GroceriesMaintenanceComponent }
+  { path: '', redirectTo: '/inicio', pathMatch: 'full' },
+  { path: 'inicio', component: DashboardComponent },
+  { path: 'mantimentos', component: GroceriesListComponent },
+  { path: 'mantimentos/novo', component: GroceriesMaintenanceComponent }
 ];
 
 @NgModule({

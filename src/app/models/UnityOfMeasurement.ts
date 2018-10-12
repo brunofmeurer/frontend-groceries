@@ -1,3 +1,3 @@
 export enum UnityOfMeasurement {
-    LITER, KG, UNITY
+    LT = "LT", KG = "KG", UN = "UN"
 }

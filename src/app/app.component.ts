@@ -6,14 +6,18 @@ import { MenuItem } from 'primeng/api';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+/**
+ * @author Bruno Meurer
+ * @description Main component
+ */
 export class AppComponent implements OnInit {
   items: MenuItem[]
   ngOnInit(): void {
     this.items = [{
       label: 'Menu',
       items: [
-        {label: 'Dashboard', icon: 'pi pi-home', routerLink: '/dashboard'},
-        {label: 'Groceries', icon: 'pi pi-bars', routerLink: '/groceries'}
+        {label: 'Inicio', icon: 'pi pi-home', routerLink: '/inicio'},
+        {label: 'Mantimentos', icon: 'pi pi-bars', routerLink: '/mantimentos'}
       ]
     }]
   }
