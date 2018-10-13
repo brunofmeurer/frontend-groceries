@@ -23,7 +23,7 @@ export class GroceriesService {
         list.splice(index, 1)
         this.set(list)
         resolve(true)
-      }, 200) // delay simulation
+      }, 1000) // delay simulation
     })
   }
 
@@ -53,7 +53,7 @@ export class GroceriesService {
         } catch (e) { // if not exist list
           resolve([]);
         }
-      }, 200) // delay simulation
+      }, 1000) // delay simulation
     })
   }
 }

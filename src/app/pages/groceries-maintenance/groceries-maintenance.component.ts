@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { Grocerie } from 'src/app/models/Grocerie';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { UnityOfMeasurement } from 'src/app/models/UnityOfMeasurement';
-
 @Component({
   selector: 'app-groceries-maintenance',
   templateUrl: './groceries-maintenance.component.html',
@@ -16,23 +15,28 @@ export class GroceriesMaintenanceComponent implements OnInit {
   itemsBreadcrumb: Array<ItemBreadcrumb>
   userform: FormGroup
   units: any[]
-  um: string = "lt"
+  um: string
+  quantityMask: any
+  expired: boolean
+  maxDateFactory: Date
+  isUserFormValid: boolean
   constructor(
     private groceriesService: GroceriesService,
     private router:Router,
     private fb: FormBuilder) {
       this.itemsBreadcrumb  = new Array()
       this.units = [
-        {label: "KG", value: UnityOfMeasurement.KG},
+        {label: "QUILIGRAMA", value: UnityOfMeasurement.KG},
         {label: "LITRO", value: UnityOfMeasurement.LT},
         {label: "UNIDADE", value: UnityOfMeasurement.UN}
       ]
+      this.um = "kg"
   }
 
   ngOnInit() {
     this.itemsBreadcrumb.push(new ItemBreadcrumb("Inicio", "/inicio"))
     this.itemsBreadcrumb.push(new ItemBreadcrumb("Listar Mantimentos", "/mantimentos"))
-    this.itemsBreadcrumb.push(new ItemBreadcrumb("New", "/mantimentos/novo"))
+    this.itemsBreadcrumb.push(new ItemBreadcrumb("Novo", "/mantimentos/novo"))
     this.userform = this.fb.group({
         'name': new FormControl('', Validators.compose(
           [
@@ -47,8 +51,13 @@ export class GroceriesMaintenanceComponent implements OnInit {
             Validators.required
           ])),
         'spoils': new FormControl(false, Validators.required),
-        'expirationDate': new FormControl(null, Validators.required),
-        'dateFactory': new FormControl(null, Validators.required),
+        'expirationDate': new FormControl(null),
+        'dateFactory': new FormControl(null, Validators.required)
+    })
+    this.onUnityChange({value: 'kg'})
+    this.userform.valueChanges.forEach(() => {
+      this.isUserFormValid = this.userform.valid
+      console.log(this.userform.valid)
     })
   }
 
@@ -57,9 +66,43 @@ export class GroceriesMaintenanceComponent implements OnInit {
   }
 
   onSubmit(value: Grocerie) {
+    console.log(this.userform.valid)
     if (this.userform.valid) {
       this.groceriesService.add(value)
     }
     console.log(this.groceriesService.list())
+  }
+
+  onUnityChange($event) {
+    if ($event.value != null) {
+      this.um = $event.value.toLowerCase()
+      switch(this.um) {
+        case 'kg':
+        case 'lt':
+        this.quantityMask = { prefix: '', thousands: '.', decimal: ',', precision : 3 }
+          break;
+        default:
+          this.quantityMask = { prefix: '', thousands: '.', precision: 0 }
+      }
+    }
+  }
+
+  onSpoilsDateChange(value) {
+    if (value.spoils) {
+      this.userform.get("expirationDate").setValidators(Validators.required)
+    } else {
+      this.userform.get("expirationDate").clearValidators()
+    }
+    this.userform.get("expirationDate").updateValueAndValidity()
+
+    console.log(this.userform.get("expirationDate").validator)
+    
+    if (value.spoils != null && value.expirationDate != null) {
+      this.expired = value.spoils && value.expirationDate.getTime() < new Date().getTime()
+    }
+
+    if (value.expirationDate != null) {
+      this.maxDateFactory = value.expirationDate
+    }
   }
 }

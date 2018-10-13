@@ -34,6 +34,7 @@ import {CalendarModule} from 'primeng/calendar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
+import { CurrencyMaskModule } from "ng2-currency-mask";
 
 // custom
 import { MenuComponent } from './components/menu/menu.component'
@@ -73,7 +74,8 @@ import { SpoilsPipe } from './pipes/spoils.pipe'
     DataViewModule,
     CardModule,
     ProgressSpinnerModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    CurrencyMaskModule
   ],
   providers: [ConfirmationService],
   bootstrap: [AppComponent]
