@@ -4,9 +4,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 A App to groceries maintenance.
 
 
-# Documentation
+## Documentation
 
-# Show Case
+## Show Case
 
 
 ## Development server

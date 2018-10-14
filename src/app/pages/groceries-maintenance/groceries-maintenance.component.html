@@ -1,8 +1,8 @@
 <app-breadcrumb [items]="itemsBreadcrumb"></app-breadcrumb>
-<app-progressbar [loading]="loading"></app-progressbar>
 <form [formGroup]="userform" (ngSubmit)="onSubmit(userform.value)">
     <div class="ui-g">
         <div class="ui-g-12 ui-md-8 ui-md-offset-2">
+            <app-progressbar [loading]="loading"></app-progressbar>
             <span class="field no-float-label">
                 <label class="label" for="name-item">Nome *</label>
                 <input required id="name-item" type="text" size="50" pInputText formControlName="name">
