@@ -1,19 +1,18 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { Component, Input } from '@angular/core';
 import { ItemBreadcrumb } from '../../models/ItemBreadcrumb';
-@Component({
-  selector: 'app-breadcrumb',
-  templateUrl: './breadcrumb.component.html',
-  styleUrls: ['./breadcrumb.component.css']
-})
 
 /**
  * @author Bruno Meurer
  * @description My simple breadcrumb component (I know, the prime face has a breadcrumb component)
  */
-export class BreadcrumbComponent implements OnInit {
+@Component({
+  selector: 'app-breadcrumb',
+  templateUrl: './breadcrumb.component.html',
+  styleUrls: ['./breadcrumb.component.css']
+})
+export class BreadcrumbComponent {
+  /**
+   * @description itens of breadcrumb
+   */
   @Input() items: Array<ItemBreadcrumb>
-  constructor() { }
-  ngOnInit() {
-  }
 }

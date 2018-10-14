@@ -10,7 +10,6 @@ import { Grocerie } from '../models/Grocerie';
 })
 export class GroceriesService {
 
-  constructor() { }
   /**
    * @description key of 'bucket' on local storage
    */

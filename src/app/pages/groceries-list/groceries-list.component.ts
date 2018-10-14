@@ -45,6 +45,7 @@ export class GroceriesListComponent implements OnInit {
    * @description flag to set loading
    */
   loading: boolean
+  
   constructor(
     private router: Router,
     private groceriesService: GroceriesService ) {

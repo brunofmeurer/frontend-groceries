@@ -112,6 +112,9 @@ export class GroceriesMaintenanceComponent implements OnInit {
     }
   }
 
+  /**
+   * @description intialize form controls
+   */
   setFormControl() {
     this.userform = this.fb.group({
       'name': new FormControl(this.grocerie.name, Validators.compose(

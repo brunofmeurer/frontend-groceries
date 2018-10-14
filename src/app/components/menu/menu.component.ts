@@ -1,19 +1,23 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {MenuItem} from 'primeng/api';
 
+/**
+ * @author Bruno Meurer
+ * @description Toolbar menu component
+ */
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })
-/**
- * @author Bruno Meurer
- * @description Toolbar menu component
- */
-export class MenuComponent implements OnInit {
+export class MenuComponent {
+  /**
+   * @description title app
+   */
   @Input() title: string = "My App"
-  constructor() { }
+
+  /**
+   * @description menu links 
+   */
   @Input() items: MenuItem[]
-  ngOnInit() {
-  }
 }
