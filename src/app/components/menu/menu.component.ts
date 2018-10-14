@@ -20,4 +20,9 @@ export class MenuComponent {
    * @description menu links 
    */
   @Input() items: MenuItem[]
+
+  /**
+   * @description display left menu
+   */
+  display: boolean
 }
