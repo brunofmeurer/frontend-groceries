@@ -1,21 +1,70 @@
 import { Injectable } from '@angular/core';
 import { Grocerie } from '../models/Grocerie';
 
+/**
+ * @author Bruno Meurer
+ * @description groceries service
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class GroceriesService {
 
   constructor() { }
-  key:string = "GROCERIES"
+  /**
+   * @description key of 'bucket' on local storage
+   */
+  private key:string = "GROCERIES"
 
+  /**
+   * 
+   * @param grocerie 
+   * @description add grocerie to list
+   */
   add(grocerie: Grocerie) {
     let list = this.get()
-    console.log(list)
     list.push(grocerie)
     this.set(list)
   }
 
+  /**
+   * 
+   * @param grocerie 
+   * @param index 
+   * @description edit grocerie and set list
+   */
+  edit(grocerie: Grocerie, index: number) {
+    let list = this.get()
+    list[index] = grocerie
+    this.set(list)
+  }
+
+  /**
+   * 
+   * @param index 
+   * @description find grocerie by index
+   * @returns Promise<Grocerie>
+   */
+  find(index: number):Promise<Grocerie> {
+    return new Promise<Grocerie>((resolve, reject) => {
+      setTimeout(() => {
+        let list = this.get()
+        // local storage do not save objects, so i'm convert again
+        if (list[index] != null) {
+          list[index].expirationDate = new Date(list[index].expirationDate)
+          list[index].dateFactory = new Date(list[index].dateFactory)
+        }
+        resolve(<Grocerie> list[index])
+      }, 1000) // deplay simulation
+    })
+  }
+
+  /**
+   * 
+   * @param index 
+   * @description delete grocerie and set list
+   * @returns Promise<boolean>
+   */
   delete(index: number): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       setTimeout(() => {
@@ -27,7 +76,12 @@ export class GroceriesService {
     })
   }
 
-  private set(data: any): void {
+  /**
+   * 
+   * @param data 
+   * @description set data on local storage
+   */
+  private set(data: any) {
     try {
       localStorage.setItem(this.key, JSON.stringify(data));
     } catch (e) {
@@ -35,7 +89,11 @@ export class GroceriesService {
     }
   }
 
-  get(): Array<Grocerie> {
+  /**
+   * @description get list on local storage
+   * @returns Array<Grocerie>
+   */
+  private get(): Array<Grocerie> {
     try {
       let array = JSON.parse(localStorage.getItem(this.key));
       return array != null ? array : [];
@@ -45,6 +103,10 @@ export class GroceriesService {
     }
   }
 
+  /**
+   * @description list saved groceries
+   * @returns Promise<Array<Grocerie>>
+   */
   list(): Promise<Array<Grocerie>> {
     return new Promise((resolve, reject) => {
       setTimeout(() => {

@@ -8,6 +8,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { GroceriesListComponent } from './pages/groceries-list/groceries-list.component';
 import { MenuModule } from 'primeng/menu';
 
+// utils
 import { AccordionModule } from 'primeng/primeng';
 import { PanelModule } from 'primeng/primeng';
 import { ButtonModule } from 'primeng/primeng';

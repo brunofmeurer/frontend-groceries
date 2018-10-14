@@ -1,3 +1,7 @@
+/**
+ * @author Bruno Meurer
+ * @description Model of item breadcrumb
+ */
 export class ItemBreadcrumb {
     name: string;
     rote: string;

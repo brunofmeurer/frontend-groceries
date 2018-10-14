@@ -1,10 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ItemBreadcrumb } from '../../models/ItemBreadcrumb'
 import { GroceriesService } from 'src/app/services/groceries.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Grocerie } from 'src/app/models/Grocerie';
 import { Validators, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { UnityOfMeasurement } from 'src/app/models/UnityOfMeasurement';
+import { SelectItem } from 'primeng/api';
+
+/**
+ * @author Bruno Meurer
+ * @description component page to maintenance groceries
+ */
 @Component({
   selector: 'app-groceries-maintenance',
   templateUrl: './groceries-maintenance.component.html',
@@ -12,18 +18,55 @@ import { UnityOfMeasurement } from 'src/app/models/UnityOfMeasurement';
   providers: [GroceriesService, FormBuilder]
 })
 export class GroceriesMaintenanceComponent implements OnInit {
+  /**
+   * @description itens of custom breadcrumb
+   */
   itemsBreadcrumb: Array<ItemBreadcrumb>
+
+  /**
+   * @description form group
+   */
   userform: FormGroup
-  units: any[]
+
+  /**
+   * @description itens of dropdown of unit's field
+   */
+
+  units: SelectItem[]
+  /**
+   * @description unity of measurement addon used in quantity's field
+   */
   um: string
+
+  /**
+   * @description quantity's mask
+   */
   quantityMask: any
+
+  /**
+   * @description set warning item expired
+   */
   expired: boolean
+
+  /**
+   * @description set max date factory when item expired
+   */
   maxDateFactory: Date
+
+  /**
+   * @description is user form valid to enable button save
+   */
   isUserFormValid: boolean
+
+  /**
+   * @description when edit, set grocerie
+   */
+  grocerie: Grocerie
   constructor(
     private groceriesService: GroceriesService,
     private router:Router,
-    private fb: FormBuilder) {
+    private fb: FormBuilder,
+    private route: ActivatedRoute) {
       this.itemsBreadcrumb  = new Array()
       this.units = [
         {label: "QUILIGRAMA", value: UnityOfMeasurement.KG},
@@ -31,48 +74,86 @@ export class GroceriesMaintenanceComponent implements OnInit {
         {label: "UNIDADE", value: UnityOfMeasurement.UN}
       ]
       this.um = "kg"
+      this.grocerie = new Grocerie()
   }
 
+  /**
+   * @description init page
+   */
   ngOnInit() {
     this.itemsBreadcrumb.push(new ItemBreadcrumb("Inicio", "/inicio"))
     this.itemsBreadcrumb.push(new ItemBreadcrumb("Listar Mantimentos", "/mantimentos"))
-    this.itemsBreadcrumb.push(new ItemBreadcrumb("Novo", "/mantimentos/novo"))
-    this.userform = this.fb.group({
-        'name': new FormControl('', Validators.compose(
-          [
-            Validators.required,
-            Validators.maxLength(50)
-          ])),
-        'unitOfMeasurement': new FormControl(null, Validators.required),
-        'quantity': new FormControl(0),
-        'price': new FormControl(0, Validators.compose(
-          [
-            Validators.pattern(""),
-            Validators.required
-          ])),
-        'spoils': new FormControl(false, Validators.required),
-        'expirationDate': new FormControl(null),
-        'dateFactory': new FormControl(null, Validators.required)
-    })
+    if (this.route.snapshot.params.id == null) {
+      this.itemsBreadcrumb.push(new ItemBreadcrumb("Novo", "/mantimentos/novo")) 
+    } else {
+      this.itemsBreadcrumb.push(new ItemBreadcrumb("Editar", "/mantimentos/editar/" + this.route.snapshot.params.id))
+    }
+    
+    this.setFormControl()
     this.onUnityChange({value: 'kg'})
-    this.userform.valueChanges.forEach(() => {
-      this.isUserFormValid = this.userform.valid
-      console.log(this.userform.valid)
+
+    this.groceriesService.find(this.route.snapshot.params.id).then(response => {
+      if (response != null) {
+        this.grocerie = response
+
+        console.log(this.grocerie)
+        this.setFormControl()
+      }
     })
   }
 
+  setFormControl() {
+    this.userform = this.fb.group({
+      'name': new FormControl(this.grocerie.name, Validators.compose(
+        [
+          Validators.required,
+          Validators.maxLength(50)
+        ])),
+      'unitOfMeasurement': new FormControl(this.grocerie.unitOfMeasurement, Validators.required),
+      'quantity': new FormControl(this.grocerie.quantity),
+      'price': new FormControl(this.grocerie.price, Validators.compose(
+        [
+          Validators.pattern(""),
+          Validators.required
+        ])),
+      'spoils': new FormControl(this.grocerie.spoils, Validators.required),
+      'expirationDate': new FormControl(this.grocerie.expirationDate),
+      'dateFactory': new FormControl(this.grocerie.dateFactory, Validators.required)
+    })
+    this.userform.valueChanges.forEach(() => {
+      this.isUserFormValid = this.userform.valid
+    })
+    this.isUserFormValid = this.userform.valid
+  }
+
+  /**
+   * @description return to prev page
+   */
   cancel() {
     this.router.navigate(['/mantimentos']);
   }
 
-  onSubmit(value: Grocerie) {
-    console.log(this.userform.valid)
+  /**
+   * 
+   * @param grocerie 
+   * @description save or update grocerie and redirect page
+   */
+  onSubmit(grocerie: Grocerie) {
     if (this.userform.valid) {
-      this.groceriesService.add(value)
+      if (this.route.snapshot.params.id == null) {
+        this.groceriesService.add(grocerie)
+      } else {
+        this.groceriesService.edit(grocerie, this.route.snapshot.params.id)
+      }
+      this.router.navigate(['/mantimentos']);
     }
-    console.log(this.groceriesService.list())
   }
 
+  /**
+   * 
+   * @param $event 
+   * @description set mask of quantity and addon of quantity when um's field change
+   */
   onUnityChange($event) {
     if ($event.value != null) {
       this.um = $event.value.toLowerCase()
@@ -87,22 +168,26 @@ export class GroceriesMaintenanceComponent implements OnInit {
     }
   }
 
-  onSpoilsDateChange(value) {
-    if (value.spoils) {
+  /**
+   * 
+   * @param grocerie
+   * @description when spoil's field or date change, make expiration date field required and set max data factory field
+   */
+  onSpoilsDateChange(grocerie: Grocerie) {
+    if (grocerie.spoils) {
       this.userform.get("expirationDate").setValidators(Validators.required)
     } else {
       this.userform.get("expirationDate").clearValidators()
     }
     this.userform.get("expirationDate").updateValueAndValidity()
-
-    console.log(this.userform.get("expirationDate").validator)
     
-    if (value.spoils != null && value.expirationDate != null) {
-      this.expired = value.spoils && value.expirationDate.getTime() < new Date().getTime()
+    if (grocerie.spoils != null
+    &&  grocerie.expirationDate != null) {
+      this.expired = grocerie.spoils && grocerie.expirationDate.getTime() < new Date().getTime()
     }
 
-    if (value.expirationDate != null) {
-      this.maxDateFactory = value.expirationDate
+    if (grocerie.expirationDate != null) {
+      this.maxDateFactory = grocerie.expirationDate
     }
   }
 }

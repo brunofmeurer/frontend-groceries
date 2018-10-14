@@ -3,6 +3,7 @@ import {MenuItem} from 'primeng/api';
 import { Grocerie } from 'src/app/models/Grocerie';
 import {ConfirmationService} from 'primeng/api';
 import { GroceriesService } from 'src/app/services/groceries.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-item-list',
@@ -18,12 +19,12 @@ export class ItemListComponent implements OnInit {
   @Output() refresh = new EventEmitter();
   constructor(
     private confirmationService: ConfirmationService,
-    private groceriesService: GroceriesService) { }
+    private groceriesService: GroceriesService,
+    private router: Router) { }
   ngOnInit() {
   }
 
   delete(index: number) {
-    
     this.confirmationService.confirm({
         message: 'Tem certeza que deseja eliminar este mantimento?',
         accept: () => {
@@ -36,9 +37,7 @@ export class ItemListComponent implements OnInit {
     });
   }
 
-  edit() {
-    console.log(this.groceriesService.get())
-  }
-
-  
+  edit(index: number) {
+    this.router.navigate(['/mantimentos/editar/' + index]);
+  } 
 }
