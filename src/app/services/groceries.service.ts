@@ -22,6 +22,9 @@ export class GroceriesService {
    * @description add grocerie to list
    */
   add(grocerie: Grocerie) {
+    if (grocerie == null) {
+      return;
+    }
     let list = this.get()
     list.push(grocerie)
     this.set(list)
@@ -34,6 +37,9 @@ export class GroceriesService {
    * @description edit grocerie and set list
    */
   edit(grocerie: Grocerie, index: number) {
+    if (grocerie == null) {
+      return;
+    }
     let list = this.get()
     list[index] = grocerie
     this.set(list)
@@ -93,7 +99,7 @@ export class GroceriesService {
    * @description get list on local storage
    * @returns Array<Grocerie>
    */
-  private get(): Array<Grocerie> {
+  get(): Array<Grocerie> {
     try {
       let array = JSON.parse(localStorage.getItem(this.key));
       return array != null ? array : [];
@@ -117,5 +123,12 @@ export class GroceriesService {
         }
       }, 1000) // delay simulation
     })
+  }
+
+  /**
+   * @de
+   */
+  clean() {
+    this.set([])
   }
 }
