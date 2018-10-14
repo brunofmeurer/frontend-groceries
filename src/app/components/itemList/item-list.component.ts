@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
  */
 export class ItemListComponent implements OnInit {
   @Input() grocerie: Grocerie
-  @Output() refresh = new EventEmitter();
+  @Output() delete = new EventEmitter();
   constructor(
     private confirmationService: ConfirmationService,
     private groceriesService: GroceriesService,
@@ -24,15 +24,11 @@ export class ItemListComponent implements OnInit {
   ngOnInit() {
   }
 
-  delete(index: number) {
+  clickOnDelete(index: number) {
     this.confirmationService.confirm({
         message: 'Tem certeza que deseja eliminar este mantimento?',
         accept: () => {
-          this.groceriesService.delete(index).then((response) => {
-            if (response) {
-              this.refresh.emit(null)
-            }
-          })
+          this.delete.emit(index)
         }
     });
   }

@@ -107,4 +107,14 @@ export class GroceriesListComponent implements OnInit {
   add() {
     this.router.navigate(['/mantimentos/novo']);
   }
+
+  /**
+   * @description click on delete button
+   */
+  delete(index: number) {
+    this.loading = true
+    this.groceriesService.delete(index).then((response) => {
+      this.fetch()
+    })
+  }
 }

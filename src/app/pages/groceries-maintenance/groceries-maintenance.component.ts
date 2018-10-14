@@ -62,6 +62,11 @@ export class GroceriesMaintenanceComponent implements OnInit {
    * @description when edit, set grocerie
    */
   grocerie: Grocerie
+
+  /**
+   * @description flag loading
+   */
+  loading: boolean
   constructor(
     private groceriesService: GroceriesService,
     private router:Router,
@@ -75,6 +80,7 @@ export class GroceriesMaintenanceComponent implements OnInit {
       ]
       this.um = "kg"
       this.grocerie = new Grocerie()
+      this.loading = false
   }
 
   /**
@@ -92,14 +98,18 @@ export class GroceriesMaintenanceComponent implements OnInit {
     this.setFormControl()
     this.onUnityChange({value: 'kg'})
 
-    this.groceriesService.find(this.route.snapshot.params.id).then(response => {
-      if (response != null) {
-        this.grocerie = response
+    if (this.route.snapshot.params.id != null) {
+      this.loading = true
+      this.groceriesService.find(this.route.snapshot.params.id).then(response => {
+        if (response != null) {
+          this.grocerie = response
 
-        console.log(this.grocerie)
-        this.setFormControl()
-      }
-    })
+          console.log(this.grocerie)
+          this.setFormControl()
+          this.loading = false
+        }
+      })
+    }
   }
 
   setFormControl() {

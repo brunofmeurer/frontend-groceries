@@ -2,6 +2,7 @@
 
 <button id="add" type="text" label="Novo Mantimento" (click)="add()" pButton icon="pi pi-plus-circle"></button>
 
+<app-progressbar [loading]="loading"></app-progressbar>
 <p-dataView 
     [value]="list"
     [paginator]="true"
@@ -32,12 +33,12 @@
     </p-header>
     <ng-template let-grocerie pTemplate="listItem">
         <div class="ui-g-12">
-            <app-item-list (refresh)="fetch($event)" [grocerie]="grocerie"></app-item-list>
+            <app-item-list (delete)="delete($event)" [grocerie]="grocerie"></app-item-list>
         </div>
     </ng-template>
     <ng-template let-grocerie pTemplate="gridItem">
         <div style="padding:.5em" class="ui-g-12 ui-md-3">
-            <app-item-list (refresh)="fetch($event)" [grocerie]="grocerie"></app-item-list>
+            <app-item-list (refresh)="delete($event)" [grocerie]="grocerie"></app-item-list>
         </div>
     </ng-template>
 </p-dataView>

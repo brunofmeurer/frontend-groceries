@@ -11,15 +11,22 @@ import { GroceriesService } from 'src/app/services/groceries.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  /**
+   * @description data view infos
+   */
   data: any
+
+  loading: boolean
   constructor(private groceriesService:GroceriesService) {
     this.data = {count: 0, priceAverage: 0, expiredGroceries: 0}
+    this.loading = false
    }
 
   /**
    * @description initialize data
    */
   ngOnInit() {
+    this.loading = true
     this.groceriesService.list().then(response => {
       this.data['count'] = response.length
 
@@ -33,6 +40,7 @@ export class DashboardComponent implements OnInit {
       })
       this.data['priceAverage'] = priceAverage / this.data.count
       this.data['expiredGroceries'] = expiredGroceries
+      this.loading = false
     })
   }
 

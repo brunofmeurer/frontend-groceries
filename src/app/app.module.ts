@@ -20,6 +20,7 @@ import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import {ProgressBarModule} from 'primeng/progressbar';
 
 // alerts
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
@@ -42,6 +43,7 @@ import { MenuComponent } from './components/menu/menu.component'
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component'
 import { ItemListComponent } from './components/itemList/item-list.component'
 import { SpoilsPipe } from './pipes/spoils.pipe'
+import { ProgressbarComponent } from './components/progressbar/progressbar.component'
 
 @NgModule({
   declarations: [
@@ -52,6 +54,7 @@ import { SpoilsPipe } from './pipes/spoils.pipe'
     MenuComponent,
     BreadcrumbComponent,
     ItemListComponent,
+    ProgressbarComponent,
     SpoilsPipe
   ],
   imports: [
@@ -76,7 +79,8 @@ import { SpoilsPipe } from './pipes/spoils.pipe'
     CardModule,
     ProgressSpinnerModule,
     ConfirmDialogModule,
-    CurrencyMaskModule
+    CurrencyMaskModule,
+    ProgressBarModule
   ],
   providers: [ConfirmationService],
   bootstrap: [AppComponent]
